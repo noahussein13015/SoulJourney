@@ -57,7 +57,7 @@ scale = Vector2(0.55484647, 1)
 mesh = SubResource("BoxMesh_upiyx")
 
 [node name="MeshInstance2D4" type="MeshInstance2D" parent="Walls" unique_id=1974361520]
-position = Vector2(6, 178)
+position = Vector2(7, 177.99998)
 rotation = 1.5707964
 scale = Vector2(0.55484647, 1)
 mesh = SubResource("BoxMesh_upiyx")
