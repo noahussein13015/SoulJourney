@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cebbdimtsnblb"]
+
+[ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://PlayerSoul/player_soul.tscn" id="1_ig7tw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4fycx"]
+
+[node name="Main" type="Node2D" unique_id=1369728216]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1320322402]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(72.75, 48.25)
+scale = Vector2(146.5, 97.5)
+mesh = SubResource("BoxMesh_4fycx")
+
+[node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("1_ig7tw")]
