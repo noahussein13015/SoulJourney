@@ -14,7 +14,6 @@ public partial class PlayerSoul : CharacterBody2D
 		);
 		var targetVelocity = direction * Speed;
 		Velocity = Velocity.Lerp(targetVelocity, FloatingEffectAttenuation * (float)delta);
-		GD.Print("Position actuelle : ", Position);
 		MoveAndSlide();
 	}
 }

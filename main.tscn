@@ -1,15 +1,63 @@
 [gd_scene format=3 uid="uid://cebbdimtsnblb"]
 
-[ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://PlayerSoul/player_soul.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="1_ig7tw"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_4fycx"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
+size = Vector2(639, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
+size = Vector2(639, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
+size = Vector2(346.75, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
+size = Vector2(346.75, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_upiyx"]
+size = Vector3(639, 20, 1)
 
 [node name="Main" type="Node2D" unique_id=1369728216]
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1320322402]
-modulate = Color(1, 0, 1, 1)
-position = Vector2(72.75, 48.25)
-scale = Vector2(146.5, 97.5)
-mesh = SubResource("BoxMesh_4fycx")
-
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("1_ig7tw")]
+position = Vector2(197, 156)
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=2061822165]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls" unique_id=1378195483]
+position = Vector2(323.5, 0)
+shape = SubResource("RectangleShape2D_4fycx")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Walls" unique_id=1018594017]
+position = Vector2(318, 353)
+shape = SubResource("RectangleShape2D_ig7tw")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls" unique_id=330067958]
+position = Vector2(6.9999995, 186.625)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_0xm2m")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Walls" unique_id=2086608088]
+position = Vector2(637, 181)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Walls" unique_id=730095113]
+position = Vector2(323, 1)
+mesh = SubResource("BoxMesh_upiyx")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="Walls" unique_id=930884307]
+position = Vector2(319, 353)
+mesh = SubResource("BoxMesh_upiyx")
+
+[node name="MeshInstance2D3" type="MeshInstance2D" parent="Walls" unique_id=1023318832]
+position = Vector2(637, 174.99998)
+rotation = 1.5707964
+scale = Vector2(0.55484647, 1)
+mesh = SubResource("BoxMesh_upiyx")
+
+[node name="MeshInstance2D4" type="MeshInstance2D" parent="Walls" unique_id=1974361520]
+position = Vector2(6, 178)
+rotation = 1.5707964
+scale = Vector2(0.55484647, 1)
+mesh = SubResource("BoxMesh_upiyx")
