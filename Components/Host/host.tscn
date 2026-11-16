@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c6koc5dt8ipoo"]
+
+[ext_resource type="Script" uid="uid://ds6sadiaqq3n3" path="res://Components/Host/Scripts/Host.cs" id="1_tiirf"]
+[ext_resource type="Texture2D" uid="uid://b3dpocp3o0x6o" path="res://Assets/KnightSpritesheet.png" id="2_tiirf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22hs7"]
+atlas = ExtResource("2_tiirf")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rs2p7"]
+atlas = ExtResource("2_tiirf")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fycx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22hs7")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rs2p7")
+}],
+"loop": 1,
+"name": &"idle_possessed",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gaq4v"]
+radius = 4.0
+height = 8.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
+size = Vector2(32.5, 21)
+
+[node name="Host" type="CharacterBody2D" unique_id=1095952825]
+scale = Vector2(2, 2)
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_tiirf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498289596]
+sprite_frames = SubResource("SpriteFrames_4fycx")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=864451756]
+position = Vector2(0, 4.5)
+shape = SubResource("CapsuleShape2D_gaq4v")
+
+[node name="PossessionArea" type="Area2D" parent="." unique_id=42309862]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PossessionArea" unique_id=1333408517]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_4fycx")
+
+[connection signal="StateChanged" from="." to="." method="OnStateChanged"]
+[connection signal="body_entered" from="PossessionArea" to="." method="OnPossessionAreaBodyEntered"]
+[connection signal="body_exited" from="PossessionArea" to="." method="OnPossessionAreaBodyExited"]

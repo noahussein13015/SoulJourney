@@ -7,6 +7,7 @@
 radius = 7.7
 
 [node name="PlayerSoul" type="CharacterBody2D" unique_id=508393786]
+collision_mask = 4
 script = ExtResource("1_gaq4v")
 Speed = 100.0
 FloatingEffectAttenuation = 8.0
@@ -14,8 +15,10 @@ FloatingEffectAttenuation = 8.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=220978416]
 shape = SubResource("CircleShape2D_4fycx")
 
-[node name="PlayerSoulSprite" type="Sprite2D" parent="." unique_id=1357922119]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1357922119]
 texture = ExtResource("2_1iohu")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1845391663]
-zoom = Vector2(2, 2)
+zoom = Vector2(1.5, 1.5)
+
+[connection signal="StateChanged" from="." to="." method="OnStateChanged"]

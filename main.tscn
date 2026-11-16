@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cebbdimtsnblb"]
 
 [ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Host/host.tscn" id="2_0xm2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
 size = Vector2(639, 20)
@@ -19,10 +20,9 @@ size = Vector3(639, 20, 1)
 
 [node name="Main" type="Node2D" unique_id=1369728216]
 
-[node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("1_ig7tw")]
-position = Vector2(197, 156)
-
 [node name="Walls" type="StaticBody2D" parent="." unique_id=2061822165]
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls" unique_id=1378195483]
 position = Vector2(323.5, 0)
@@ -61,3 +61,9 @@ position = Vector2(7, 177.99998)
 rotation = 1.5707964
 scale = Vector2(0.55484647, 1)
 mesh = SubResource("BoxMesh_upiyx")
+
+[node name="Host" parent="." unique_id=1095952825 instance=ExtResource("2_0xm2m")]
+position = Vector2(134, 73)
+
+[node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("1_ig7tw")]
+position = Vector2(197, 156)
