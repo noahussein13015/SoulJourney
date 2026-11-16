@@ -23,6 +23,7 @@ public partial class Host : CharacterBody2D
 	}
 
 	////////////////// GODOT ////////////////////
+
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
