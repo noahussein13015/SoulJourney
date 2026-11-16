@@ -1,10 +1,46 @@
 [gd_scene format=3 uid="uid://csqy13af45gxm"]
 
 [ext_resource type="Script" uid="uid://l1sr7l2cx5xj" path="res://Components/PlayerSoul/Scripts/PlayerSoul.cs" id="1_gaq4v"]
-[ext_resource type="Texture2D" uid="uid://b2n4k5juqf7a2" path="res://Assets/PlayerSoulSprite.png" id="2_1iohu"]
+[ext_resource type="Texture2D" uid="uid://c47pgep1uhh4o" path="res://Assets/PlayerSoulSpritesheet.png" id="2_gaq4v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4fycx"]
 radius = 7.7
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1iohu"]
+atlas = ExtResource("2_gaq4v")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bcuy"]
+atlas = ExtResource("2_gaq4v")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ge2qb"]
+atlas = ExtResource("2_gaq4v")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkvav"]
+atlas = ExtResource("2_gaq4v")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fycx"]
+animations = [{
+"frames": [{
+"duration": 50.0,
+"texture": SubResource("AtlasTexture_1iohu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bcuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ge2qb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkvav")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 11.0
+}]
 
 [node name="PlayerSoul" type="CharacterBody2D" unique_id=508393786]
 collision_mask = 4
@@ -15,10 +51,12 @@ FloatingEffectAttenuation = 8.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=220978416]
 shape = SubResource("CircleShape2D_4fycx")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1357922119]
-texture = ExtResource("2_1iohu")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1845391663]
 zoom = Vector2(1.5, 1.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1501253203]
+sprite_frames = SubResource("SpriteFrames_4fycx")
+animation = &"idle"
+frame_progress = 0.5148397
 
 [connection signal="StateChanged" from="." to="." method="OnStateChanged"]

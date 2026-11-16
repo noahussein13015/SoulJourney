@@ -15,7 +15,7 @@ public partial class PlayerSoul : CharacterBody2D
 	
 	// The current Host with Player in it's PossessionZone, setted by the host when Player enters the zone
 	public Host TargetHost {get; set;} = null;
-	private Sprite2D _sprite = null;
+	private AnimatedSprite2D _animatedSprite = null;
 	
 	////////////////// ASSESSORS ////////////////////
 	private void SetState(STATE value)
@@ -28,7 +28,8 @@ public partial class PlayerSoul : CharacterBody2D
     ////////////////// GODOT ////////////////////
     public override void _Ready()
     {
-        _sprite = GetNode<Sprite2D>("Sprite2D");
+        _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_animatedSprite.Play("idle");
     }
 
 	public override void _PhysicsProcess(double delta)
@@ -81,13 +82,13 @@ public partial class PlayerSoul : CharacterBody2D
 		if (State == STATE.IN_HOST)
 		{
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
-			_sprite.Hide();
+			_animatedSprite.Hide();
 		}
 		else
 		{
 			GlobalPosition = TargetHost.GlobalPosition;
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", false);
-			_sprite.Show();
+			_animatedSprite.Show();
 		}
 	}
 }
