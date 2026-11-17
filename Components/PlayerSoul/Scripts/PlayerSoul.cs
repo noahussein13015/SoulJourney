@@ -76,18 +76,20 @@ public partial class PlayerSoul : CharacterBody2D
 
 	////////////////// SIGNALS RESPONSES ////////////////////
 	
-	// if is in host, hide the sprite
+	// if is in host, hide the sprite, deactivate the collisions
 	private void OnStateChanged()
 	{
 		if (State == STATE.IN_HOST)
 		{
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+			GetNode<Camera2D>("Camera2D").Enabled = false;
 			_animatedSprite.Hide();
 		}
 		else
 		{
 			GlobalPosition = TargetHost.GlobalPosition;
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", false);
+			GetNode<Camera2D>("Camera2D").Enabled = true;
 			_animatedSprite.Show();
 		}
 	}

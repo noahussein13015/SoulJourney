@@ -74,7 +74,6 @@ script = ExtResource("1_tiirf")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498289596]
 sprite_frames = SubResource("SpriteFrames_4fycx")
 animation = &"idle"
-frame_progress = 0.85717237
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=864451756]
 position = Vector2(0, 4.5)
@@ -86,6 +85,12 @@ visible = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PossessionArea" unique_id=1333408517]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_4fycx")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=747093953]
+enabled = false
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
 
 [connection signal="StateChanged" from="." to="." method="OnStateChanged"]
 [connection signal="body_entered" from="PossessionArea" to="." method="OnPossessionAreaBodyEntered"]

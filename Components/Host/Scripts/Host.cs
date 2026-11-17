@@ -66,10 +66,12 @@ public partial class Host : CharacterBody2D
 		if (State == STATE.POSSESSED)
 		{
 			_animatedSprite.Play("idle_possessed");
+			GetNode<Camera2D>("Camera2D").Enabled = true;
 		}
 		else
 		{
 			_animatedSprite.Play("idle");
+			GetNode<Camera2D>("Camera2D").Enabled = false;
 		}
 	}
 }
