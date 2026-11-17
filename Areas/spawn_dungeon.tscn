@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bnyhkw5i6cmi8"]
 
 [ext_resource type="Texture2D" uid="uid://dnbtg2he0hhgc" path="res://Assets/StoneInteriorTileset.png" id="1_eoqw0"]
+[ext_resource type="PackedScene" uid="uid://wkyvpvakwl1v" path="res://Components/Doors/soul_portal.tscn" id="2_cby2o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cby2o"]
 texture = ExtResource("1_eoqw0")
@@ -55,3 +56,10 @@ tile_set = SubResource("TileSet_upiyx")
 [node name="Decorations" type="TileMapLayer" parent="." unique_id=667771800]
 tile_map_data = PackedByteArray("AAALAAgAAAAAAAMAAAALAAkAAAAAAAQAAAAZAAgAAAAAAAMAABAZAAkAAAAAAAQAABA=")
 tile_set = SubResource("TileSet_oe7rs")
+
+[node name="SoulPortal" parent="." unique_id=198967701 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("2_cby2o")]
+position = Vector2(307, 142)
+TeleportationPoint = NodePath("../SoulPortalTeleportPoint")
+
+[node name="SoulPortalTeleportPoint" type="Marker2D" parent="." unique_id=2134030973]
+position = Vector2(262, 273)

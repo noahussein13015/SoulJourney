@@ -15,6 +15,7 @@ public partial class PlayerSoul : CharacterBody2D
 	
 	// The current Host with Player in it's PossessionZone, setted by the host when Player enters the zone
 	public Host TargetHost {get; set;} = null;
+	public SoulPortal TargetPortal {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
 	
 	////////////////// ASSESSORS ////////////////////
@@ -34,15 +35,22 @@ public partial class PlayerSoul : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Input.IsActionJustPressed("action_button") && TargetHost != null)
+		if (Input.IsActionJustPressed("action_button"))
 		{
-			if (State == STATE.SOUL)
+			if (TargetHost != null)
 			{
-				Possess();
+				if (State == STATE.SOUL)
+				{
+					Possess();
+				}
+				else 
+				{
+					Unpossess();
+				}
 			}
-			else 
+			if (TargetPortal != null)
 			{
-				Unpossess();
+				GetThroughPortal();
 			}
 		}
 		// to skip controls handling if is possessing an host
@@ -61,6 +69,16 @@ public partial class PlayerSoul : CharacterBody2D
 	////////////////// LOGIC ////////////////////
 	
 	// Possess the current targetHost
+
+	private void GetThroughPortal()
+	{
+		var endpoint = TargetPortal.TeleportationPoint;
+
+		if (endpoint != null)
+		{
+			GlobalPosition = endpoint.GlobalPosition;
+		}
+	}
 	private void Possess()
 	{
 		TargetHost.SetState(Host.STATE.POSSESSED);

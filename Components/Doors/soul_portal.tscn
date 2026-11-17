@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://wkyvpvakwl1v"]
+
+[ext_resource type="Texture2D" uid="uid://cp31q6n0rsnlk" path="res://Assets/SoulPortalSprite.png" id="1_1xjj5"]
+[ext_resource type="Script" uid="uid://chqja8apaia1v" path="res://Doors/Scripts/SoulPortal.cs" id="1_02bbl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4fycx"]
+radius = 14.035668
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
+size = Vector2(59.5, 21)
+
+[node name="SoulPortal" type="StaticBody2D" unique_id=198967701]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_02bbl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1839219081]
+texture = ExtResource("1_1xjj5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1604266223]
+shape = SubResource("CircleShape2D_4fycx")
+
+[node name="DetectionZone" type="Area2D" parent="." unique_id=390533216]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=514256044]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_4fycx")
+
+[connection signal="body_entered" from="DetectionZone" to="." method="OnDetectionZoneBodyEntered"]
