@@ -63,7 +63,7 @@ radius = 4.0
 height = 8.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
-size = Vector2(32.5, 21)
+size = Vector2(11.5, 14.75)
 
 [node name="Host" type="CharacterBody2D" unique_id=1095952825]
 scale = Vector2(2, 2)
@@ -80,10 +80,9 @@ position = Vector2(0, 4.5)
 shape = SubResource("CapsuleShape2D_gaq4v")
 
 [node name="PossessionArea" type="Area2D" parent="." unique_id=42309862]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PossessionArea" unique_id=1333408517]
-position = Vector2(0, 0.5)
+position = Vector2(0.25, 3.125)
 shape = SubResource("RectangleShape2D_4fycx")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=747093953]

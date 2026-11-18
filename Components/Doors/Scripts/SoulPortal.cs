@@ -1,3 +1,4 @@
+using System.Runtime;
 using Godot;
 
 public partial class SoulPortal : StaticBody2D
@@ -7,7 +8,8 @@ public partial class SoulPortal : StaticBody2D
 	{
 		if (body is PlayerSoul playerSoul)
 		{
-			playerSoul.TargetPortal = this;
+			// To make the portal unaccessible if an host is near
+			playerSoul.TargetPortal = playerSoul.TargetHost == null ? this : null;
 		}
 	}
 	private void OnDetectionZoneBodyExited(Node2D body)

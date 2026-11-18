@@ -68,7 +68,6 @@ public partial class PlayerSoul : CharacterBody2D
 
 	////////////////// LOGIC ////////////////////
 	
-	// Possess the current targetHost
 
 	private void GetThroughPortal()
 	{
@@ -77,8 +76,11 @@ public partial class PlayerSoul : CharacterBody2D
 		if (endpoint != null)
 		{
 			GlobalPosition = endpoint.GlobalPosition;
+			TargetPortal = null;
 		}
 	}
+
+	// Possess the current targetHost
 	private void Possess()
 	{
 		TargetHost.SetState(Host.STATE.POSSESSED);
