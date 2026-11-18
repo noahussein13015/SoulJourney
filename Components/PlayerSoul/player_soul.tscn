@@ -51,11 +51,6 @@ FloatingEffectAttenuation = 8.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=220978416]
 shape = SubResource("CircleShape2D_4fycx")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1845391663]
-zoom = Vector2(1.5, 1.5)
-position_smoothing_enabled = true
-position_smoothing_speed = 8.0
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1501253203]
 sprite_frames = SubResource("SpriteFrames_4fycx")
 animation = &"idle"

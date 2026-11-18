@@ -50,7 +50,7 @@ public partial class PlayerSoul : CharacterBody2D
 			}
 			if (TargetPortal != null)
 			{
-				GetThroughPortal();
+				TargetPortal.TeleportPlayer(this);
 			}
 		}
 		// to skip controls handling if is possessing an host
@@ -67,18 +67,6 @@ public partial class PlayerSoul : CharacterBody2D
 	}
 
 	////////////////// LOGIC ////////////////////
-	
-
-	private void GetThroughPortal()
-	{
-		var endpoint = TargetPortal.TeleportationPoint;
-
-		if (endpoint != null)
-		{
-			GlobalPosition = endpoint.GlobalPosition;
-			TargetPortal = null;
-		}
-	}
 
 	// Possess the current targetHost
 	private void Possess()
@@ -102,14 +90,12 @@ public partial class PlayerSoul : CharacterBody2D
 		if (State == STATE.IN_HOST)
 		{
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
-			GetNode<Camera2D>("Camera2D").Enabled = false;
 			_animatedSprite.Hide();
 		}
 		else
 		{
 			GlobalPosition = TargetHost.GlobalPosition;
 			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", false);
-			GetNode<Camera2D>("Camera2D").Enabled = true;
 			_animatedSprite.Show();
 		}
 	}

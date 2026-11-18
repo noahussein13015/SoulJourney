@@ -1,16 +1,15 @@
 [gd_scene format=3 uid="uid://cebbdimtsnblb"]
 
-[ext_resource type="PackedScene" uid="uid://bnyhkw5i6cmi8" path="res://Areas/spawn_dungeon.tscn" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bnyhkw5i6cmi8" path="res://Components/Areas/SpawnDungeon/spawn_dungeon.tscn" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Host/host.tscn" id="2_0xm2m"]
 
 [node name="Main" type="Node2D" unique_id=1369728216]
 
 [node name="SpawnDungeon" parent="." unique_id=1038084449 instance=ExtResource("1_h2yge")]
-position = Vector2(-14, -34)
 
 [node name="Host" parent="." unique_id=1095952825 instance=ExtResource("2_0xm2m")]
-position = Vector2(295, 164)
+position = Vector2(345, -222)
 
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("1_ig7tw")]
 position = Vector2(197, 156)
