@@ -67,7 +67,7 @@ TeleportationPoint = NodePath("../SoulPortalTeleportPoint")
 TargetRoom = 1
 
 [node name="SoulPortalTeleportPoint" type="Marker2D" parent="." unique_id=2134030973]
-position = Vector2(271, -34)
+position = Vector2(312, 31)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1824760898]
 position = Vector2(279, 289)

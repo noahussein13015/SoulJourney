@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 public partial class SoulPortal : StaticBody2D
@@ -8,13 +9,14 @@ public partial class SoulPortal : StaticBody2D
 	
 	////////////////// LOGIC ////////////////////
 	
-	public void TeleportPlayer(PlayerSoul playerSoul)
+	public async void TeleportPlayer(PlayerSoul playerSoul)
 	{
 		if (TeleportationPoint != null)
 		{
+			EmitSignal(SignalName.RoomChanged, (int)TargetRoom);
+			await Task.Delay(500);
 			playerSoul.GlobalPosition = TeleportationPoint.GlobalPosition;
 			playerSoul.TargetPortal = null;
-			EmitSignal(SignalName.RoomChanged, (int)TargetRoom);
 		}
 	}
 
