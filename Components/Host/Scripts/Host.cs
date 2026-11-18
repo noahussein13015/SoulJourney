@@ -9,7 +9,8 @@ public partial class Host : CharacterBody2D
 		EMPTY,
 		POSSESSED,
 	}
-	private STATE State = STATE.EMPTY;
+	public STATE State = STATE.EMPTY;
+	public MaterialDoor TargetDoor {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
 
 	////////////////// ASSESSORS ////////////////////

@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://b7ggbh7cetr8j"]
+
+[ext_resource type="Script" uid="uid://rst244hhsp01" path="res://Components/Doors/Scripts/MaterialDoor.cs" id="1_2i7g8"]
+[ext_resource type="Texture2D" uid="uid://0fcenc11igrq" path="res://Assets/DoorSpritesheet.png" id="1_rcdna"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2i7g8"]
+atlas = ExtResource("1_rcdna")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3oxvh"]
+atlas = ExtResource("1_rcdna")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fycx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2i7g8")
+}],
+"loop": 1,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3oxvh")
+}],
+"loop": 1,
+"name": &"opened",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fycx"]
+size = Vector2(26, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_upiyx"]
+size = Vector2(26, 30)
+
+[node name="MaterialDoor" type="StaticBody2D" unique_id=224641550]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_2i7g8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1015761334]
+sprite_frames = SubResource("SpriteFrames_4fycx")
+animation = &"closed"
+
+[node name="DetectionZone" type="Area2D" parent="." unique_id=974664229]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=567830483]
+position = Vector2(0, 27)
+shape = SubResource("RectangleShape2D_4fycx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=268883505]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_upiyx")
+
+[connection signal="body_entered" from="DetectionZone" to="." method="OnDetectionZoneBodyEntered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="OnDetectionZoneBodyExited"]
