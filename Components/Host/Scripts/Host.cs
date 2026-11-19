@@ -41,6 +41,13 @@ public partial class Host : CharacterBody2D
 			"move_up",
 			"move_down"
 		);
+		if (Input.IsActionJustPressed("action_button"))
+		{
+			if (TargetDoor != null)
+			{
+				TargetDoor.TeleportPlayer(this);
+			}
+		}
 		Velocity = direction * Speed;
 		MoveAndSlide();
 	}

@@ -4,8 +4,8 @@ using Godot;
 public partial class SoulPortal : StaticBody2D
 {
 	[Export] public Marker2D TeleportationPoint {get; set;} = null;
-	[Export] public SpawnDungeon.Room TargetRoom {get; set;}
-	[Signal] public delegate void RoomChangedEventHandler(SpawnDungeon.Room TargetRoom);
+	[Export] public int TargetRoom {get; set;}
+	[Signal] public delegate void RoomChangedEventHandler(int TargetRoom);
 	
 	////////////////// LOGIC ////////////////////
 	
@@ -13,7 +13,7 @@ public partial class SoulPortal : StaticBody2D
 	{
 		if (TeleportationPoint != null)
 		{
-			EmitSignal(SignalName.RoomChanged, (int)TargetRoom);
+			EmitSignal(SignalName.RoomChanged, TargetRoom);
 			await Task.Delay(500);
 			playerSoul.GlobalPosition = TeleportationPoint.GlobalPosition;
 			playerSoul.TargetPortal = null;

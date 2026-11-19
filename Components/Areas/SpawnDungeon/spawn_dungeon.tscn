@@ -64,11 +64,8 @@ tile_set = SubResource("TileSet_oe7rs")
 
 [node name="SoulPortal" parent="." unique_id=198967701 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("3_h8dn0")]
 position = Vector2(307, 142)
-TeleportationPoint = NodePath("../SoulPortalTeleportPoint")
+TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal1TeleportPoint")
 TargetRoom = 1
-
-[node name="SoulPortalTeleportPoint" type="Marker2D" parent="." unique_id=2134030973]
-position = Vector2(312, 31)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1824760898]
 position = Vector2(279, 289)
@@ -82,7 +79,18 @@ position = Vector2(306, 213)
 [node name="HallCameraPosition" type="Marker2D" parent="CameraPositions" unique_id=2088516895]
 position = Vector2(306, -132)
 
-[node name="MaterialDoor" parent="." unique_id=224641550 instance=ExtResource("4_3p1sb")]
+[node name="MaterialDoor" parent="." unique_id=224641550 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("4_3p1sb")]
 position = Vector2(306, -240)
+TeleportationPoint = NodePath("../TeleportationPoints/MaterialDoor1TeleportPoint")
 
-[connection signal="RoomChanged" from="SoulPortal" to="." method="OnSoulPortalRoomChanged"]
+[node name="TeleportationPoints" type="Node2D" parent="." unique_id=742272189]
+
+[node name="SoulPortal1TeleportPoint" type="Marker2D" parent="TeleportationPoints" unique_id=2134030973]
+position = Vector2(312, 31)
+
+[node name="MaterialDoor1TeleportPoint" type="Marker2D" parent="TeleportationPoints" unique_id=1468367278]
+position = Vector2(218, 326)
+
+[connection signal="RoomChanged" from="SoulPortal" to="." method="OnRoomChanged"]
+[connection signal="RoomChanged" from="MaterialDoor" to="." method="OnRoomChanged"]
+[connection signal="StateChanged" from="MaterialDoor" to="MaterialDoor" method="OnStateChanged"]
