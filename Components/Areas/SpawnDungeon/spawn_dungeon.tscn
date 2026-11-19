@@ -81,7 +81,7 @@ position = Vector2(306, -132)
 [node name="Doors" type="Node2D" parent="." unique_id=389726497]
 
 [node name="SoulPortal1" parent="Doors" unique_id=198967701 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("3_h8dn0")]
-position = Vector2(307, 142)
+position = Vector2(296, 180)
 TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal1TeleportPoint")
 TargetRoom = 1
 

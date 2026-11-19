@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Godot;
 
-public partial class SoulPortal : StaticBody2D
+public partial class SoulPortal : Area2D
 {
 	[Export] public Marker2D TeleportationPoint {get; set;} = null;
 	[Export] public int TargetRoom {get; set;}
@@ -22,7 +22,7 @@ public partial class SoulPortal : StaticBody2D
 
 	////////////////// SIGNAL RESPONSES ////////////////////
 
-	private void OnDetectionZoneBodyEntered(Node2D body)
+	private void OnBodyEntered(Node2D body)
 	{
 		if (body is PlayerSoul playerSoul)
 		{
@@ -30,7 +30,7 @@ public partial class SoulPortal : StaticBody2D
 			playerSoul.TargetPortal = playerSoul.TargetHost == null ? this : null;
 		}
 	}
-	private void OnDetectionZoneBodyExited(Node2D body)
+	private void OnBodyExited(Node2D body)
 	{
 		if (body is PlayerSoul playerSoul)
 		{
