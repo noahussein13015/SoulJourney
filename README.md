@@ -1,112 +1,159 @@
-Étape 0 : Initialisation & Configuration Godot (Mobile Paysage & Résolution)
-Objectif : Poser les fondations techniques pour un affichage net et des contrôles tactiles impeccables.
+# Soul Journey — Banque d'idées
 
-Création du projet : Ouvre Godot, crée un projet 2D vide.
+Jeu de puzzle 2D en vue de dessus (Godot / C#, contrôles PC).
+Le joueur est une **âme** qui traverse ce qu'un corps ne peut pas franchir, et qui **possède des hôtes** pour utiliser leurs capacités.
+Chaque énigme repose sur le choix du bon corps, au bon endroit, dans le bon ordre.
 
-Paramètres de la fenêtre (Project Settings > Display > Window) :
+---
 
-Orientation : Landscape (Paysage forcé).
+## 1. L'âme (état de base)
 
-Taille de base (Viewport Width / Height) : 640 x 360 (ratio 16:9 parfait pour le mobile).
+| Capacité | Détail |
+|---|---|
+| Traverse les grilles | Les barreaux et grilles bloquent tous les corps, pas l'âme |
+| Emprunte les SoulPortal | Téléportation réservée à l'âme |
+| Possède / libère | Entre dans un hôte proche, en ressort à côté de lui |
+| Fragile | Bloquée par la **lumière sacrée** et les **flammes bleues** (voir objets) |
+| Temps limité *(option)* | Hors d'un corps, l'âme s'affaiblit : il faut trouver un hôte avant la fin du chrono |
 
-Étirement (Stretch) : Mode canvas_items et Aspect keep.
+---
 
-Le rendu net : Va dans Rendering > Textures et règle le Default Texture Filter sur Nearest (évite tout effet flou).
+## 2. Les hôtes
 
-Arborescence des dossiers : Crée des dossiers propres : scenes/, scripts/, assets/ (vides pour l'instant).
+### Humain *(existant)*
+- **Fonction :** il interagit avec le monde.
+- Il ouvre les portes, actionne les leviers, ramasse et porte une clé, appuie sur des boutons, tourne les miroirs.
+- **Limite :** c'est le corps le plus « moyen ». Il ne peut ni casser, ni voler, ni se faufiler.
 
-Étape 1 : Le Mouvement Fluide de l'Âme (Boîte Grise)
-Objectif : Faire bouger une simple forme géométrique grise avec une inertie vaporeuse et aérienne.
+### Ogre
+- **Fonction :** la force brute.
+- Il **casse les murs fissurés**, **pousse les blocs lourds** et écrase les caisses.
+- Il pèse assez lourd pour activer les **plaques de pression lourdes**.
+- **Limites :** il est lent et ne passe pas dans les couloirs étroits. Il effondre les **planchers fragiles** (ce qui peut aussi servir).
 
-Scène PlayerSoul.tscn :
+### Sorcier
+- **Fonction :** la télékinésie.
+- Il **déplace des objets à distance**, y compris en hauteur, par-dessus les fosses ou derrière les grilles.
+- Il **active des runes** murales.
+- **Limites :** il ne porte qu'un objet à la fois et doit garder une ligne de vue. Il est lent pour lancer un sort.
 
-Ajoute un nœud CharacterBody2D.
+### Rat
+- **Fonction :** se faufiler.
+- Il passe dans les **trous de souris** et les **conduits**.
+- Il est trop léger pour déclencher les plaques et les pièges à pression.
+- Il ramasse les **petits objets** (petite clé, engrenage).
+- **Limite :** il ne peut actionner ni porte ni levier.
 
-Ajoute un CollisionShape2D (forme de cercle, rayon de 6 pixels).
+### Oiseau
+- **Fonction :** voler.
+- Il **survole les fosses, l'eau et les pics**.
+- Il **accroche des objets légers** pour les déposer ailleurs.
+- **Limite :** le vol est limité par une jauge, ou bien il est bloqué par les courants d'air.
 
-Ajoute un Sprite2D affichant une simple texture de carré ou de cercle gris clair (#cccccc).
+### Golem de pierre
+- **Fonction :** servir de poids et de bouclier.
+- Il **reste en place quand l'âme le quitte** et sert alors de poids permanent sur une plaque.
+- Il **bloque les projectiles** et résiste au feu et à la lave.
+- **Limite :** il ne bouge que s'il est possédé et il est très lent.
 
-Ajoute une Camera2D (zoom réglé à 2.0 ou 3.0).
+### Slime
+- **Fonction :** se diviser et coller.
+- Il **se divise en deux** pour tenir deux plaques à la fois, puis se reforme.
+- Il passe **sous les portes**.
+- Il **éteint les flammes**.
+- **Limite :** il est très lent et se dissout dans l'eau.
 
-Le script de déplacement (PlayerSoul.gd) :
+---
 
-Coder la récupération de la position du doigt ou de la souris à l'écran (get_global_mouse_position()).
+## 3. Les objets et éléments de décor
 
-Appliquer un mouvement fluide avec une interpolation (lerp) pour donner l'effet de flottement propre à une âme.
+### Mécanismes
+| Objet | Qui l'utilise | Effet |
+|---|---|---|
+| **Levier** | Humain | Change d'état (on/off) : porte, pont, plateforme |
+| **Bouton mural** | Humain | Effet temporaire (minuterie) |
+| **Plaque de pression** | Tout corps sauf le Rat (pas l'âme) | Active tant qu'un poids est dessus |
+| **Plaque lourde** | Ogre, Golem, bloc lourd | Ne réagit qu'à un gros poids |
+| **Rune magique** | Sorcier | S'allume à distance |
+| **Engrenage manquant** | Rat (le ramasse), Humain (le pose) | Répare une machine |
 
-Vérification : Lance le jeu sur ton téléphone ou l'émulateur et assure-toi que la forme grise glisse de façon fluide sous ton doigt.
+### Obstacles
+| Obstacle | Bloque | Franchi par |
+|---|---|---|
+| **Grille** | Tous les corps | L'âme |
+| **Mur fissuré** | Tout le monde | L'Ogre (le détruit) |
+| **Trou de souris / conduit** | Les gros corps | Le Rat, le Slime |
+| **Fosse / vide** | Les marcheurs | L'Oiseau, ou un pont abaissé par levier |
+| **Eau profonde** | Les marcheurs | L'Oiseau (au-dessus) ; le Slime s'y dissout |
+| **Lave** | Tout le monde | Le Golem |
+| **Plancher fragile** | Rien (il cède sous l'Ogre) | Crée un passage vers l'étage du dessous |
+| **Lumière sacrée** | L'âme | Un corps possédé, ou un miroir pour dévier le rayon |
+| **Flammes bleues** | L'âme | Le Slime (les éteint) |
 
-Étape 2 : Le Décor et les Collisions (La Boîte Grise Initiale)
-Objectif : Construire une mini-salle fermée avec des murs pour tester les déplacements.
+### Objets déplaçables
+| Objet | Comment le déplacer |
+|---|---|
+| **Caisse en bois** | L'Humain la pousse, l'Ogre la casse |
+| **Bloc de pierre** | L'Ogre le pousse, le Sorcier le soulève |
+| **Clé** | L'Humain la porte, le Rat porte une petite clé, l'Oiseau la transporte, le Sorcier la fait léviter |
+| **Miroir orientable** | L'Humain le tourne ; il dévie les rayons de lumière |
+| **Orbe d'énergie** | Le Sorcier la place sur un socle pour alimenter une porte |
+| **Tonneau explosif** | Allumé par une flamme ; il détruit les murs fissurés à distance |
 
-Scène principale (Main.tscn) :
+### Dangers
+| Élément | Effet |
+|---|---|
+| **Tourelle à projectiles** | Bloquée par le Golem |
+| **Courant d'air** | Repousse l'Oiseau et l'âme |
+| **Cristal d'expulsion** | Éjecte l'âme de son hôte quand il passe à côté |
+| **Autel de purification** | Rend un hôte non possédable pendant X secondes |
 
-Ajoute un nœud StaticBody2D pour dessiner les murs de la pièce à l'aide de rectangles gris sombres (#444444).
+### Spécifiques à l'âme
+| Élément | Effet |
+|---|---|
+| **SoulPortal** *(existant)* | Téléportation réservée à l'âme |
+| **Lanterne d'âme** | L'âme s'y loge pour éclairer une zone sombre ou révéler des passages cachés |
+| **Réceptacle vide** | Un corps-statue que l'âme anime pour actionner un mécanisme fixe |
 
-Associe des CollisionShape2D rectangulaires à chaque mur.
+---
 
-Vérification : Déplace ton âme grise : elle doit longer les murs sans pouvoir les traverser.
+## 4. Combos d'énigmes (exemples)
 
-Étape 3 : Le Système de Possession (Hôtes en Boîte Grise)
-Objectif : Pouvoir entrer dans un corps (carré d'une autre couleur), en prendre le contrôle et en ressortir.
+1. **Le relais :** l'âme traverse la grille, possède l'Humain, tire le levier, se libère, puis passe le pont.
+2. **Le poids oublié :** le Golem reste sur une plaque pendant que l'âme part posséder un autre hôte.
+3. **La livraison :** le Rat passe par le conduit et récupère la clé, l'âme le quitte, possède l'Humain de l'autre côté, et le Rat lâche la clé devant la porte.
+4. **Le pont magique :** le Sorcier fait léviter un bloc au-dessus d'une fosse, puis l'Ogre le pousse dedans pour combler le trou.
+5. **Le rayon :** l'Humain tourne le miroir pour dévier la lumière sacrée qui bloquait l'âme.
+6. **La chute :** l'Ogre marche sur un plancher fragile, tombe à l'étage du dessous et y casse un mur.
+7. **Le double :** le Slime se divise pour tenir deux plaques à la fois, pendant que l'âme passe la porte.
+8. **Le coursier :** l'Oiseau survole l'eau avec un engrenage et le dépose près d'une machine que l'Humain répare.
+9. **Le chronomètre :** l'Humain appuie sur un bouton temporisé, se libère, et l'âme doit atteindre le SoulPortal avant la fin.
+10. **La chaîne (fin de jeu) :** le Golem tient une plaque lourde, le Sorcier dépose l'orbe au-dessus de la lave, puis le Slime éteint les flammes bleues pour laisser passer l'âme.
 
-Scène Host.tscn :
+---
 
-Ajoute un CharacterBody2D nommé Host.
+## 5. Progression de la difficulté
 
-Ajoute un CollisionShape2D et un Sprite2D affichant un carré de couleur différente (ex: bleu clair #3b82f6 pour l'humain).
+| Monde | Hôtes débloqués | Nouveaux éléments | Type d'énigmes |
+|---|---|---|---|
+| **1. Le Donjon** | Humain | Portes, leviers, grilles, SoulPortal | Une seule capacité, un seul hôte |
+| **2. Les Égouts** | + Rat | Conduits, petits objets, engrenages | Alterner entre 2 hôtes |
+| **3. La Forteresse** | + Ogre | Murs fissurés, plaques lourdes, caisses | Ordre des actions |
+| **4. La Tour du Mage** | + Sorcier | Runes, orbes, objets en hauteur | Verticalité, objets à distance |
+| **5. Les Cavernes** | + Golem, Slime | Lave, planchers fragiles, flammes bleues | Laisser des hôtes en place, gestion du poids |
+| **6. Les Falaises** | + Oiseau | Fosses, eau, courants d'air | Transport aérien, chemins alternatifs |
+| **7. Le Sanctuaire** | — | Lumière sacrée, miroirs, cristaux d'expulsion, autels | L'âme elle-même est menacée ; combinaisons de 3 hôtes ou plus |
 
-Ajoute une Area2D (zone de détection) légèrement plus large autour du carré bleu.
+**Principes de design :**
+- Chaque monde **introduit** une mécanique seule, puis la **combine** avec les précédentes, puis la **détourne** (par exemple, l'Ogre qui casse un plancher par erreur).
+- Le joueur doit toujours pouvoir **voir** ce qui bloque, et comprendre quel hôte peut le franchir (couleur ou icône par type d'obstacle).
+- Une **salle bonus** optionnelle par monde, avec une énigme difficile et une récompense cosmétique pour l'âme.
 
-La logique de possession :
+---
 
-Code une variable d'état is_possessed = false.
+## 6. Pistes techniques (architecture actuelle)
 
-Lorsque l'âme entre dans l'aire de l'hôte et qu'un signal/bouton d'action est déclenché :
-
-is_possessed = true.
-
-Désactive le script de mouvement et masque le PlayerSoul (ou centre-le sur l'hôte).
-
-Active le script de déplacement de l'hôte (déplacement à pied, plus lourd et plus lent).
-
-Change la couleur du carré hôte (ex: passe du bleu au vert) pour indiquer qu'il est habité.
-
-Sortir du corps :
-
-Si le joueur appuie sur le bouton "Libérer", l'hôte s'immobilise, is_possessed redevient false, et l'âme grise réapparaît juste à côté de lui.
-
-Étape 4 : Les Obstacles et la Logique "Clé / Serrure"
-Objectif : Mettre en place la règle d'or des énigmes (l'âme passe partout, l'humain pousse/ouvre).
-
-Différencier les déplacements :
-
-L'âme (cercle gris) peut traverser une zone de "grille" (un simple rectangle semi-transparent).
-
-L'humain (carré bleu) est bloqué par la grille, mais peut franchir ou actionner un déclencheur.
-
-Créer une porte interactive (Door.tscn) :
-
-Une zone rectangulaire qui vérifie quel corps entre en contact avec elle. Si c'est l'hôte humain, la porte (rectangle gris) s'efface ou s'ouvre.
-
-Étape 5 : L'Interface Tactile (UI Mobile minimale)
-Objectif : Poser les boutons indispensables pour jouer sur écran tactile en mode paysage.
-
-Ajouter un CanvasLayer :
-
-Crée un bouton contextuel "Posséder" qui s'affiche uniquement lorsque l'âme est à portée d'un hôte.
-
-Crée un bouton "Quitter le corps" qui apparaît en haut de l'écran lorsque le joueur contrôle un hôte.
-
-Étape 6 : Assemblage et Test du Niveau 1 (Prototype Valide)
-Objectif : Concaténer toutes les briques grises dans une mini-map pour valider que le jeu est intuitif et amusant.
-
-Mise en scène de la boîte grise :
-
-Zone A (Départ) : L'âme grise apparaît seule derrière une grille infranchissable pour un humain.
-
-Zone B (L'Hôte) : De l'autre côté de la grille, un carré bleu (l'hôte) est bloqué près d'une porte fermée.
-
-Zone C (Résolution) : L'âme traverse la grille, possède le carré bleu, actionne l'ouverture de la porte, se libère, et sort de la zone.
-
-Phase de test : Joue l'intégralité de cette boucle en boîte grise sur ton téléphone jusqu'à ce que la sensation de jeu soit fluide et sans accroc. (C'est seulement une fois cette étape validée à 100 % que tu pourras remplacer les carrés gris par tes futurs sprites 16x16 et tes lumières).
+- **Classe `Host` de base** et une sous-classe par type (`Ogre`, `Wizard`…), avec une méthode virtuelle `UseAbility()`.
+- **Interface `IInteractable`** (leviers, portes, runes) avec un `CanBeUsedBy(Host host)`, pour que chaque objet décide quels hôtes il accepte.
+- **Collision layers** par type de corps : âme, petit, normal, lourd, volant. Les grilles et conduits filtrent par layer.
+- **Signaux** comme actuellement : un objet *demande* et la zone ou le gestionnaire *exécute*.
