@@ -57,5 +57,6 @@ shape = SubResource("RectangleShape2D_4fycx")
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_upiyx")
 
+[connection signal="StateChanged" from="." to="." method="OnStateChanged"]
 [connection signal="body_entered" from="DetectionZone" to="." method="OnDetectionZoneBodyEntered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="OnDetectionZoneBodyExited"]

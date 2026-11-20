@@ -11,6 +11,7 @@ public partial class Host : CharacterBody2D
 	}
 	// Read-only from outside: use SetState() so the StateChanged signal is emitted
 	public STATE State {get; private set;} = STATE.EMPTY;
+	// The door in front of the host, set by the door, used by PlayerSoul when the action is pressed
 	public MaterialDoor TargetDoor {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
 
@@ -31,16 +32,13 @@ public partial class Host : CharacterBody2D
 		_animatedSprite.Play("idle");
 	}
 
+	// movement only: the action button is handled by PlayerSoul so one press triggers one action
 	public override void _PhysicsProcess(double delta)
 	{
 		// to skip controls handling if is not possessed
 		if (State != STATE.POSSESSED) return;
 
 		var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-		if (Input.IsActionJustPressed("action_button") && TargetDoor != null)
-		{
-			TargetDoor.TeleportPlayer(this);
-		}
 		Velocity = direction * Speed;
 		MoveAndSlide();
 	}
@@ -49,15 +47,16 @@ public partial class Host : CharacterBody2D
 
 	private void OnPossessionAreaBodyEntered(Node2D body)
 	{
-		if (body is PlayerSoul playerSoul && playerSoul.TargetHost == null)
+		if (body is PlayerSoul playerSoul)
 		{
-			playerSoul.TargetHost = this;
+			playerSoul.TargetHost ??= this;
 		}
 	}
 
 	private void OnPossessionAreaBodyExited(Node2D body)
 	{
-		if (body is PlayerSoul playerSoul && State != STATE.POSSESSED)
+		// to not clear another host targeted by the soul, nor the host it is possessing
+		if (body is PlayerSoul playerSoul && playerSoul.TargetHost == this && State != STATE.POSSESSED)
 		{
 			playerSoul.TargetHost = null;
 		}

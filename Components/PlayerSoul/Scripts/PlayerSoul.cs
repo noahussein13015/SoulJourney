@@ -14,6 +14,7 @@ public partial class PlayerSoul : CharacterBody2D
 
 	// The current Host with Player in its PossessionZone, set by the host when Player enters the zone
 	public Host TargetHost {get; set;} = null;
+	// The current SoulPortal overlapping the Player, set by the portal when Player enters it
 	public SoulPortal TargetPortal {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
 	private CollisionShape2D _collisionShape = null;
@@ -36,22 +37,11 @@ public partial class PlayerSoul : CharacterBody2D
 		_animatedSprite.Play("idle");
 	}
 
+	// disabled by the area during room transitions, which locks every player input
 	public override void _PhysicsProcess(double delta)
 	{
 		if (Input.IsActionJustPressed("action_button"))
-		{
-			if (TargetHost != null)
-			{
-				if (_state == STATE.SOUL)
-					Possess();
-				else
-					Unpossess();
-			}
-			if (TargetPortal != null)
-			{
-				TargetPortal.TeleportPlayer(this);
-			}
-		}
+			HandleAction();
 
 		// to skip controls handling if is possessing an host
 		if (_state != STATE.SOUL) return;
@@ -63,6 +53,27 @@ public partial class PlayerSoul : CharacterBody2D
 	}
 
 	////////////////// LOGIC ////////////////////
+
+	// Single entry point of the action button: one press triggers exactly one action
+	private void HandleAction()
+	{
+		if (_state == STATE.SOUL)
+		{
+			// a near host has priority over the portal
+			if (TargetHost != null)
+				Possess();
+			else
+				TargetPortal?.RequestTeleport(this);
+		}
+		else
+		{
+			// a door in front of the host has priority over unpossessing
+			if (TargetHost.TargetDoor != null)
+				TargetHost.TargetDoor.RequestTeleport(TargetHost);
+			else
+				Unpossess();
+		}
+	}
 
 	// Possesses the current TargetHost
 	private void Possess()
@@ -91,6 +102,8 @@ public partial class PlayerSoul : CharacterBody2D
 		else
 		{
 			GlobalPosition = TargetHost.GlobalPosition;
+			// to not keep the momentum from before the possession
+			Velocity = Vector2.Zero;
 			_collisionShape.SetDeferred("disabled", false);
 			_animatedSprite.Show();
 		}

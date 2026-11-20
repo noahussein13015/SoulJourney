@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://wkyvpvakwl1v" path="res://Components/Doors/soul_portal.tscn" id="3_h8dn0"]
 [ext_resource type="PackedScene" uid="uid://b7ggbh7cetr8j" path="res://Components/Doors/material_door.tscn" id="4_3p1sb"]
 [ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="5_h8dn0"]
+[ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Host/host.tscn" id="6_pwamj"]
+[ext_resource type="PackedScene" uid="uid://r4mwu6pwp0fv" path="res://Components/ScreenFader/screen_fader.tscn" id="7_fader"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cby2o"]
 texture = ExtResource("2_3p1sb")
@@ -46,10 +48,10 @@ texture = ExtResource("2_3p1sb")
 [sub_resource type="TileSet" id="TileSet_oe7rs"]
 sources/0 = SubResource("TileSetAtlasSource_ifksd")
 
-[node name="SpawnDungeon" type="Node2D" unique_id=1038084449 node_paths=PackedStringArray("SpawnRoomCameraPosition", "HallCameraPosition")]
+[node name="SpawnDungeon" type="Node2D" unique_id=1038084449 node_paths=PackedStringArray("RoomCameraPositions", "PlayerSoul")]
 script = ExtResource("1_yqyln")
-SpawnRoomCameraPosition = NodePath("CameraPositions/SpawnRoomCameraPosition")
-HallCameraPosition = NodePath("CameraPositions/HallCameraPosition")
+RoomCameraPositions = [NodePath("CameraPositions/SpawnRoomCameraPosition"), NodePath("CameraPositions/HallCameraPosition")]
+PlayerSoul = NodePath("PlayerSoul")
 
 [node name="Tilemap" type="Node2D" parent="." unique_id=547730705]
 
@@ -67,8 +69,7 @@ tile_set = SubResource("TileSet_oe7rs")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1824760898]
 visible = false
-position = Vector2(279, 289)
-zoom = Vector2(0.9, 0.9)
+position = Vector2(306, 213)
 
 [node name="CameraPositions" type="Node2D" parent="." unique_id=2143574028]
 
@@ -76,7 +77,7 @@ zoom = Vector2(0.9, 0.9)
 position = Vector2(306, 213)
 
 [node name="HallCameraPosition" type="Marker2D" parent="CameraPositions" unique_id=2088516895]
-position = Vector2(306, -132)
+position = Vector2(306, -88)
 
 [node name="Doors" type="Node2D" parent="." unique_id=389726497]
 
@@ -100,6 +101,10 @@ position = Vector2(218, 326)
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("5_h8dn0")]
 position = Vector2(360, 288)
 
-[connection signal="RoomChanged" from="Doors/SoulPortal1" to="." method="OnRoomChanged"]
-[connection signal="RoomChanged" from="Doors/MaterialDoor1" to="." method="OnRoomChanged"]
-[connection signal="StateChanged" from="Doors/MaterialDoor1" to="Doors/MaterialDoor1" method="OnStateChanged"]
+[node name="Host" parent="." unique_id=1095952825 instance=ExtResource("6_pwamj")]
+position = Vector2(288, 9)
+
+[node name="ScreenFader" parent="." unique_id=870755015 instance=ExtResource("7_fader")]
+
+[connection signal="TeleportRequested" from="Doors/SoulPortal1" to="." method="OnTeleportRequested"]
+[connection signal="TeleportRequested" from="Doors/MaterialDoor1" to="." method="OnTeleportRequested"]

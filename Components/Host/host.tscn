@@ -68,7 +68,7 @@ size = Vector2(11.5, 14.75)
 [node name="Host" type="CharacterBody2D" unique_id=1095952825]
 scale = Vector2(2, 2)
 collision_layer = 2
-collision_mask = 5
+collision_mask = 4
 script = ExtResource("1_tiirf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1498289596]

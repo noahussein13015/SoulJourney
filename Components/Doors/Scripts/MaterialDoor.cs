@@ -1,14 +1,14 @@
-using System.Threading.Tasks;
 using Godot;
 
 public partial class MaterialDoor : StaticBody2D
 {
 	[Signal] public delegate void StateChangedEventHandler();
-	[Signal] public delegate void RoomChangedEventHandler(int TargetRoom);
+	// the area runs the transition (fade, camera, teleport), the door only asks for it
+	[Signal] public delegate void TeleportRequestedEventHandler(Node2D body, Vector2 destination, int targetRoom);
 	[Export] public int TargetRoom {get; set;}
 	[Export] public Marker2D TeleportationPoint {get; set;} = null;
 
-	private const int DelayMs = 500;
+	private const float CloseDelay = 0.5f;
 
 	private enum STATE
 	{
@@ -16,6 +16,8 @@ public partial class MaterialDoor : StaticBody2D
 		CLOSE
 	}
 	private STATE _state = STATE.CLOSE;
+	// The host currently standing in the DetectionZone
+	private Host _hostInZone = null;
 	private AnimatedSprite2D _animatedSprite = null;
 
 	////////////////// ACCESSORS ////////////////////
@@ -36,14 +38,18 @@ public partial class MaterialDoor : StaticBody2D
 
 	////////////////// LOGIC ////////////////////
 
-	public async void TeleportPlayer(Host playerHost)
+	public void RequestTeleport(Host playerHost)
 	{
 		if (TeleportationPoint == null) return;
 
-		EmitSignal(SignalName.RoomChanged, TargetRoom);
-		await Task.Delay(DelayMs);
-		playerHost.GlobalPosition = TeleportationPoint.GlobalPosition;
-		playerHost.TargetDoor = null;
+		EmitSignal(SignalName.TeleportRequested, playerHost, TeleportationPoint.GlobalPosition, TargetRoom);
+	}
+
+	// the door is open only while a possessed host stands in front of it
+	private void UpdateState()
+	{
+		bool isOpen = _hostInZone != null && _hostInZone.State == Host.STATE.POSSESSED;
+		SetState(isOpen ? STATE.OPEN : STATE.CLOSE);
 	}
 
 	////////////////// SIGNAL RESPONSES ////////////////////
@@ -56,7 +62,7 @@ public partial class MaterialDoor : StaticBody2D
 				_animatedSprite.Play("opened");
 				break;
 			case STATE.CLOSE:
-				await Task.Delay(DelayMs);
+				await ToSignal(GetTree().CreateTimer(CloseDelay), SceneTreeTimer.SignalName.Timeout);
 				// to check if the door is still closed and not reopened during the delay
 				if (_state == STATE.CLOSE)
 					_animatedSprite.Play("closed");
@@ -68,17 +74,21 @@ public partial class MaterialDoor : StaticBody2D
 	{
 		if (body is not Host playerHost) return;
 
-		bool isPossessed = playerHost.State == Host.STATE.POSSESSED;
-		playerHost.TargetDoor = isPossessed ? this : null;
-		if (isPossessed)
-			SetState(STATE.OPEN);
+		_hostInZone = playerHost;
+		playerHost.TargetDoor = this;
+		// to open/close the door when the host is possessed or released while in the zone
+		playerHost.StateChanged += UpdateState;
+		UpdateState();
 	}
 
 	private void OnDetectionZoneBodyExited(Node2D body)
 	{
-		if (body is not Host playerHost) return;
+		if (body is not Host playerHost || playerHost != _hostInZone) return;
 
-		SetState(STATE.CLOSE);
-		playerHost.TargetDoor = null;
+		playerHost.StateChanged -= UpdateState;
+		if (playerHost.TargetDoor == this)
+			playerHost.TargetDoor = null;
+		_hostInZone = null;
+		UpdateState();
 	}
 }
