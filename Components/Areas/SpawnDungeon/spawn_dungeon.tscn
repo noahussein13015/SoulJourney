@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://wkyvpvakwl1v" path="res://Components/Doors/soul_portal.tscn" id="3_h8dn0"]
 [ext_resource type="PackedScene" uid="uid://b7ggbh7cetr8j" path="res://Components/Doors/material_door.tscn" id="4_3p1sb"]
 [ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="5_h8dn0"]
-[ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Host/host.tscn" id="6_pwamj"]
+[ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Hosts/Human/human.tscn" id="6_pwamj"]
 [ext_resource type="PackedScene" uid="uid://r4mwu6pwp0fv" path="res://Components/ScreenFader/screen_fader.tscn" id="7_fader"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cby2o"]
@@ -108,7 +108,7 @@ TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal2TeleportPoint")
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("5_h8dn0")]
 position = Vector2(360, 288)
 
-[node name="Host" parent="." unique_id=1095952825 instance=ExtResource("6_pwamj")]
+[node name="Human" parent="." unique_id=1095952825 instance=ExtResource("6_pwamj")]
 position = Vector2(288, 9)
 
 [node name="ScreenFader" parent="." unique_id=870755015 instance=ExtResource("7_fader")]

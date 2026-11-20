@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c6koc5dt8ipoo"]
+
+[ext_resource type="PackedScene" path="res://Components/Hosts/host_base.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Components/Hosts/Human/Scripts/Human.cs" id="2_human"]
+[ext_resource type="Texture2D" uid="uid://b3dpocp3o0x6o" path="res://Assets/KnightSpritesheet.png" id="3_sprite"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tiirf"]
+atlas = ExtResource("3_sprite")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22hs7"]
+atlas = ExtResource("3_sprite")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyerx"]
+atlas = ExtResource("3_sprite")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rs2p7"]
+atlas = ExtResource("3_sprite")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hpf20"]
+atlas = ExtResource("3_sprite")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6aap"]
+atlas = ExtResource("3_sprite")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fycx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tiirf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22hs7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xyerx")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rs2p7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hpf20")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k6aap")
+}],
+"loop": 1,
+"name": &"idle_possessed",
+"speed": 5.0
+}]
+
+[node name="Human" unique_id=1095952825 instance=ExtResource("1_base")]
+script = ExtResource("2_human")
+
+[node name="AnimatedSprite2D" parent="." unique_id=1498289596]
+sprite_frames = SubResource("SpriteFrames_4fycx")
+animation = &"idle"

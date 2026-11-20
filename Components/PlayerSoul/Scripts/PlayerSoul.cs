@@ -65,13 +65,10 @@ public partial class PlayerSoul : CharacterBody2D
 			else
 				TargetPortal?.RequestTeleport(this);
 		}
-		else
+		// the host ability has priority over unpossessing
+		else if (!TargetHost.HandleAction())
 		{
-			// a door in front of the host has priority over unpossessing
-			if (TargetHost.TargetDoor != null)
-				TargetHost.TargetDoor.RequestTeleport(TargetHost);
-			else
-				Unpossess();
+			Unpossess();
 		}
 	}
 

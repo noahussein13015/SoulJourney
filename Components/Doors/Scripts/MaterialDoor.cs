@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class MaterialDoor : StaticBody2D
+public partial class MaterialDoor : StaticBody2D, IInteractable
 {
 	[Signal] public delegate void StateChangedEventHandler();
 	// the area runs the transition (fade, camera, teleport), the door only asks for it
@@ -38,17 +38,28 @@ public partial class MaterialDoor : StaticBody2D
 
 	////////////////// LOGIC ////////////////////
 
-	public void RequestTeleport(Host playerHost)
+	// only a human can open a material door
+	public bool CanBeUsedBy(Host host)
+	{
+		return host is Human;
+	}
+
+	public void Interact(Host host)
+	{
+		RequestTeleport(host);
+	}
+
+	private void RequestTeleport(Host playerHost)
 	{
 		if (TeleportationPoint == null) return;
 
 		EmitSignal(SignalName.TeleportRequested, playerHost, TeleportationPoint.GlobalPosition, TargetRoom);
 	}
 
-	// the door is open only while a possessed host stands in front of it
+	// the door is open only while a possessed host that can use it stands in front of it
 	private void UpdateState()
 	{
-		bool isOpen = _hostInZone != null && _hostInZone.State == Host.STATE.POSSESSED;
+		bool isOpen = _hostInZone != null && _hostInZone.State == Host.STATE.POSSESSED && CanBeUsedBy(_hostInZone);
 		SetState(isOpen ? STATE.OPEN : STATE.CLOSE);
 	}
 
@@ -75,7 +86,7 @@ public partial class MaterialDoor : StaticBody2D
 		if (body is not Host playerHost) return;
 
 		_hostInZone = playerHost;
-		playerHost.TargetDoor = this;
+		playerHost.TargetInteractable = this;
 		// to open/close the door when the host is possessed or released while in the zone
 		playerHost.StateChanged += UpdateState;
 		UpdateState();
@@ -86,8 +97,8 @@ public partial class MaterialDoor : StaticBody2D
 		if (body is not Host playerHost || playerHost != _hostInZone) return;
 
 		playerHost.StateChanged -= UpdateState;
-		if (playerHost.TargetDoor == this)
-			playerHost.TargetDoor = null;
+		if (playerHost.TargetInteractable == this)
+			playerHost.TargetInteractable = null;
 		_hostInZone = null;
 		UpdateState();
 	}
