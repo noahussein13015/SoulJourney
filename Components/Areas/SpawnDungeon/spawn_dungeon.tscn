@@ -81,8 +81,19 @@ position = Vector2(306, -88)
 
 [node name="Doors" type="Node2D" parent="." unique_id=389726497]
 
+[node name="TeleportationPoints" type="Node2D" parent="Doors" unique_id=742272189]
+
+[node name="SoulPortal1TeleportPoint" type="Marker2D" parent="Doors/TeleportationPoints" unique_id=2134030973]
+position = Vector2(298, 44)
+
+[node name="SoulPortal2TeleportPoint" type="Marker2D" parent="Doors/TeleportationPoints" unique_id=523735817]
+position = Vector2(298, 180)
+
+[node name="MaterialDoor1TeleportPoint" type="Marker2D" parent="Doors/TeleportationPoints" unique_id=1468367278]
+position = Vector2(218, 326)
+
 [node name="SoulPortal1" parent="Doors" unique_id=198967701 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("3_h8dn0")]
-position = Vector2(296, 180)
+position = Vector2(298, 180)
 TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal1TeleportPoint")
 TargetRoom = 1
 
@@ -90,13 +101,9 @@ TargetRoom = 1
 position = Vector2(306, -240)
 TeleportationPoint = NodePath("../TeleportationPoints/MaterialDoor1TeleportPoint")
 
-[node name="TeleportationPoints" type="Node2D" parent="Doors" unique_id=742272189]
-
-[node name="SoulPortal1TeleportPoint" type="Marker2D" parent="Doors/TeleportationPoints" unique_id=2134030973]
-position = Vector2(312, 31)
-
-[node name="MaterialDoor1TeleportPoint" type="Marker2D" parent="Doors/TeleportationPoints" unique_id=1468367278]
-position = Vector2(218, 326)
+[node name="SoulPortal2" parent="Doors" unique_id=1482006008 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("3_h8dn0")]
+position = Vector2(298, 43)
+TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal2TeleportPoint")
 
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("5_h8dn0")]
 position = Vector2(360, 288)
@@ -108,3 +115,4 @@ position = Vector2(288, 9)
 
 [connection signal="TeleportRequested" from="Doors/SoulPortal1" to="." method="OnTeleportRequested"]
 [connection signal="TeleportRequested" from="Doors/MaterialDoor1" to="." method="OnTeleportRequested"]
+[connection signal="TeleportRequested" from="Doors/SoulPortal2" to="." method="OnTeleportRequested"]
