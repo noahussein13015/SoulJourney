@@ -1,4 +1,3 @@
-using System.Numerics;
 using Godot;
 
 public partial class PlayerSoul : CharacterBody2D
@@ -11,27 +10,31 @@ public partial class PlayerSoul : CharacterBody2D
 		SOUL,
 		IN_HOST
 	}
-	private STATE State = STATE.SOUL;
-	
-	// The current Host with Player in it's PossessionZone, setted by the host when Player enters the zone
+	private STATE _state = STATE.SOUL;
+
+	// The current Host with Player in its PossessionZone, set by the host when Player enters the zone
 	public Host TargetHost {get; set;} = null;
 	public SoulPortal TargetPortal {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
-	
-	////////////////// ASSESSORS ////////////////////
+	private CollisionShape2D _collisionShape = null;
+
+	////////////////// ACCESSORS ////////////////////
+
 	private void SetState(STATE value)
 	{
-		if (State == value) return;
-		State = value;
+		if (_state == value) return;
+		_state = value;
 		EmitSignal(SignalName.StateChanged);
 	}
 
-    ////////////////// GODOT ////////////////////
-    public override void _Ready()
-    {
-        _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+	////////////////// GODOT ////////////////////
+
+	public override void _Ready()
+	{
+		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
 		_animatedSprite.Play("idle");
-    }
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -39,28 +42,21 @@ public partial class PlayerSoul : CharacterBody2D
 		{
 			if (TargetHost != null)
 			{
-				if (State == STATE.SOUL)
-				{
+				if (_state == STATE.SOUL)
 					Possess();
-				}
-				else 
-				{
+				else
 					Unpossess();
-				}
 			}
 			if (TargetPortal != null)
 			{
 				TargetPortal.TeleportPlayer(this);
 			}
 		}
+
 		// to skip controls handling if is possessing an host
-		if (State != STATE.SOUL) return;
-		var direction = Input.GetVector(
-			"move_left",
-			"move_right",
-			"move_up",
-			"move_down"
-		);
+		if (_state != STATE.SOUL) return;
+
+		var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 		var targetVelocity = direction * Speed;
 		Velocity = Velocity.Lerp(targetVelocity, FloatingEffectAttenuation * (float)delta);
 		MoveAndSlide();
@@ -68,14 +64,14 @@ public partial class PlayerSoul : CharacterBody2D
 
 	////////////////// LOGIC ////////////////////
 
-	// Possess the current targetHost
+	// Possesses the current TargetHost
 	private void Possess()
 	{
 		TargetHost.SetState(Host.STATE.POSSESSED);
 		SetState(STATE.IN_HOST);
 	}
 
-	// Unpossesses the current targetHost
+	// Unpossesses the current TargetHost
 	private void Unpossess()
 	{
 		TargetHost.SetState(Host.STATE.EMPTY);
@@ -83,19 +79,19 @@ public partial class PlayerSoul : CharacterBody2D
 	}
 
 	////////////////// SIGNALS RESPONSES ////////////////////
-	
+
 	// if is in host, hide the sprite, deactivate the collisions
 	private void OnStateChanged()
 	{
-		if (State == STATE.IN_HOST)
+		if (_state == STATE.IN_HOST)
 		{
-			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+			_collisionShape.SetDeferred("disabled", true);
 			_animatedSprite.Hide();
 		}
 		else
 		{
 			GlobalPosition = TargetHost.GlobalPosition;
-			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", false);
+			_collisionShape.SetDeferred("disabled", false);
 			_animatedSprite.Show();
 		}
 	}

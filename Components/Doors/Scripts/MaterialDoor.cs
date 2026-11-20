@@ -8,73 +8,77 @@ public partial class MaterialDoor : StaticBody2D
 	[Export] public int TargetRoom {get; set;}
 	[Export] public Marker2D TeleportationPoint {get; set;} = null;
 
+	private const int DelayMs = 500;
+
 	private enum STATE
 	{
 		OPEN,
 		CLOSE
 	}
-	private STATE State = STATE.CLOSE;
+	private STATE _state = STATE.CLOSE;
+	private AnimatedSprite2D _animatedSprite = null;
 
-	////////////////// ASSESSORS ////////////////////
+	////////////////// ACCESSORS ////////////////////
 
 	private void SetState(STATE value)
 	{
-		if (State == value)
-			return;
-		State = value;
+		if (_state == value) return;
+		_state = value;
 		EmitSignal(SignalName.StateChanged);
 	}
 
+	////////////////// GODOT ////////////////////
+
+	public override void _Ready()
+	{
+		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+	}
+
 	////////////////// LOGIC ////////////////////
+
 	public async void TeleportPlayer(Host playerHost)
 	{
-		if (TeleportationPoint != null)
-		{
-			EmitSignal(SignalName.RoomChanged, TargetRoom);
-			await Task.Delay(500);
-			playerHost.GlobalPosition = TeleportationPoint.GlobalPosition;
-			playerHost.TargetDoor = null;
-		}
+		if (TeleportationPoint == null) return;
+
+		EmitSignal(SignalName.RoomChanged, TargetRoom);
+		await Task.Delay(DelayMs);
+		playerHost.GlobalPosition = TeleportationPoint.GlobalPosition;
+		playerHost.TargetDoor = null;
 	}
 
 	////////////////// SIGNAL RESPONSES ////////////////////
 
 	private async void OnStateChanged()
 	{
-		switch(State)
+		switch (_state)
 		{
 			case STATE.OPEN:
-				GetNode<AnimatedSprite2D>("AnimatedSprite2D").Play("opened");
+				_animatedSprite.Play("opened");
 				break;
 			case STATE.CLOSE:
-				await Task.Delay(500);
-				// to check if the door is still closed and not reopened during the 500ms timer
-				if (State == STATE.CLOSE)
-				{	
-					GetNode<AnimatedSprite2D>("AnimatedSprite2D").Play("closed");
-				}
-				break;
-			default:
+				await Task.Delay(DelayMs);
+				// to check if the door is still closed and not reopened during the delay
+				if (_state == STATE.CLOSE)
+					_animatedSprite.Play("closed");
 				break;
 		}
 	}
+
 	private void OnDetectionZoneBodyEntered(Node2D body)
 	{
-		if (body is Host playerHost)
-		{
-			playerHost.TargetDoor = playerHost.State == Host.STATE.POSSESSED ? this : null;
-			if (playerHost.TargetDoor != null)
-			{
-				SetState(STATE.OPEN);
-			}
-		}
+		if (body is not Host playerHost) return;
+
+		bool isPossessed = playerHost.State == Host.STATE.POSSESSED;
+		playerHost.TargetDoor = isPossessed ? this : null;
+		if (isPossessed)
+			SetState(STATE.OPEN);
 	}
+
 	private void OnDetectionZoneBodyExited(Node2D body)
 	{
-		if (body is Host playerHost)
-		{
-			SetState(STATE.CLOSE);
-			playerHost.TargetDoor = null;
-		}
+		if (body is not Host playerHost) return;
+
+		SetState(STATE.CLOSE);
+		playerHost.TargetDoor = null;
 	}
 }

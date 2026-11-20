@@ -9,16 +9,16 @@ public partial class Host : CharacterBody2D
 		EMPTY,
 		POSSESSED,
 	}
-	public STATE State = STATE.EMPTY;
+	// Read-only from outside: use SetState() so the StateChanged signal is emitted
+	public STATE State {get; private set;} = STATE.EMPTY;
 	public MaterialDoor TargetDoor {get; set;} = null;
 	private AnimatedSprite2D _animatedSprite = null;
 
-	////////////////// ASSESSORS ////////////////////
-	
+	////////////////// ACCESSORS ////////////////////
+
 	public void SetState(STATE value)
 	{
-		if (State == value)
-			return;
+		if (State == value) return;
 		State = value;
 		EmitSignal(SignalName.StateChanged);
 	}
@@ -35,24 +35,18 @@ public partial class Host : CharacterBody2D
 	{
 		// to skip controls handling if is not possessed
 		if (State != STATE.POSSESSED) return;
-		var direction = Input.GetVector(
-			"move_left",
-			"move_right",
-			"move_up",
-			"move_down"
-		);
-		if (Input.IsActionJustPressed("action_button"))
+
+		var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+		if (Input.IsActionJustPressed("action_button") && TargetDoor != null)
 		{
-			if (TargetDoor != null)
-			{
-				TargetDoor.TeleportPlayer(this);
-			}
+			TargetDoor.TeleportPlayer(this);
 		}
 		Velocity = direction * Speed;
 		MoveAndSlide();
 	}
 
 	////////////////// SIGNALS RESPONSES ////////////////////
+
 	private void OnPossessionAreaBodyEntered(Node2D body)
 	{
 		if (body is PlayerSoul playerSoul && playerSoul.TargetHost == null)
@@ -71,13 +65,6 @@ public partial class Host : CharacterBody2D
 
 	private void OnStateChanged()
 	{
-		if (State == STATE.POSSESSED)
-		{
-			_animatedSprite.Play("idle_possessed");
-		}
-		else
-		{
-			_animatedSprite.Play("idle");
-		}
+		_animatedSprite.Play(State == STATE.POSSESSED ? "idle_possessed" : "idle");
 	}
 }
