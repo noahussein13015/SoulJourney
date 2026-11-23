@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Components/Interactables/Scripts/Lever.cs" id="1_lever"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lever"]
+animations = [{
+"frames": [],
+"loop": 1,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"on",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(26, 21)
+
+[node name="Lever" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_lever")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_lever")
+animation = &"off"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="DetectionZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone"]
+position = Vector2(0, 18)
+shape = SubResource("RectangleShape2D_zone")
+
+[connection signal="body_entered" from="DetectionZone" to="." method="OnDetectionZoneBodyEntered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="OnDetectionZoneBodyExited"]
