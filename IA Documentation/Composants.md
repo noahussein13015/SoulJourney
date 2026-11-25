@@ -32,7 +32,7 @@
 - **Usage :** connecter `Toggled` dans la scène de niveau à l'objet contrôlé (porte, pont…). Le levier ne connaît pas sa cible.
 - **Collisions :** corps 12×4 décalé de 6 px vers le bas ; `DetectionZone` 26×21 décalée de 18 px vers le bas.
 - **Placé dans :** `SpawnDungeon` (213, 206), `Toggled` pas encore connecté.
-- **À faire dans l'éditeur :** l'animation `off` utilise `LeverSpritesheet.png`, mais l'animation `on` est encore vide.
+- **Sprite :** `Assets/LeverSpritesheet.png`, `off` = région (0, 0), `on` = région (0, 16), 16×16 chacune.
 
 ## MaterialDoor — porte physique
 - **Scène / script :** `Components/Doors/material_door.tscn`, `Scripts/MaterialDoor.cs` (`StaticBody2D, IInteractable`)

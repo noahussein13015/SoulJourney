@@ -5,11 +5,11 @@ Le plus récent en haut. Format : date — titre, puis ce qui a été fait, les 
 ---
 
 ## 2026-11-25 — Levier : sprite, collision et placement
-- Animation `off` remplie (`LeverSpritesheet.png`, région 0,0 16×16) ; collision du corps réduite à 12×4, décalée de 6 px vers le bas.
+- Animations remplies avec `LeverSpritesheet.png` : `off` = région (0, 0), `on` = région (0, 16), 16×16 ; collision du corps réduite à 12×4, décalée de 6 px vers le bas.
 - `CanBeUsedBy` simplifié en `return host is Human;`.
 - Un levier est placé dans `SpawnDungeon` en (213, 206).
 - **Fichiers :** `Components/Interactables/lever.tscn`, `Components/Interactables/Scripts/Lever.cs`, `Components/Areas/SpawnDungeon/spawn_dungeon.tscn`.
-- **Reste à faire :** remplir l'animation `on` ; créer l'objet contrôlé (porte verrouillée / herse) et y connecter `Toggled`.
+- **Reste à faire :** créer l'objet contrôlé (porte verrouillée / herse) et y connecter `Toggled`.
 
 ## 2026-11-23 — Création de la documentation IA
 - Création du dossier `IA Documentation/` (README, Architecture, Composants, Journal) et d'un `CLAUDE.md` à la racine qui impose de la tenir à jour.
