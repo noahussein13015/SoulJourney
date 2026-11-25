@@ -23,7 +23,7 @@ public partial class Lever : StaticBody2D, IInteractable
 	// only a human can pull a lever
 	public bool CanBeUsedBy(Host host)
 	{
-		return host is Human ? true : false;
+		return host is Human;
 	}
 
 	public void Interact(Host host)

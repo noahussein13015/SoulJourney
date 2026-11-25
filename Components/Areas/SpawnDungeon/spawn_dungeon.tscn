@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://csqy13af45gxm" path="res://Components/PlayerSoul/player_soul.tscn" id="5_h8dn0"]
 [ext_resource type="PackedScene" uid="uid://c6koc5dt8ipoo" path="res://Components/Hosts/Human/human.tscn" id="6_pwamj"]
 [ext_resource type="PackedScene" uid="uid://r4mwu6pwp0fv" path="res://Components/ScreenFader/screen_fader.tscn" id="7_fader"]
+[ext_resource type="PackedScene" uid="uid://canhwlby5o13a" path="res://Components/Interactables/lever.tscn" id="8_v262f"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cby2o"]
 texture = ExtResource("2_3p1sb")
@@ -108,10 +109,13 @@ TeleportationPoint = NodePath("../TeleportationPoints/SoulPortal2TeleportPoint")
 [node name="PlayerSoul" parent="." unique_id=508393786 instance=ExtResource("5_h8dn0")]
 position = Vector2(360, 288)
 
+[node name="ScreenFader" parent="." unique_id=870755015 instance=ExtResource("7_fader")]
+
+[node name="Lever" parent="." unique_id=1978179856 instance=ExtResource("8_v262f")]
+position = Vector2(213, 206)
+
 [node name="Human" parent="." unique_id=1095952825 instance=ExtResource("6_pwamj")]
 position = Vector2(288, 9)
-
-[node name="ScreenFader" parent="." unique_id=870755015 instance=ExtResource("7_fader")]
 
 [connection signal="TeleportRequested" from="Doors/SoulPortal1" to="." method="OnTeleportRequested"]
 [connection signal="TeleportRequested" from="Doors/MaterialDoor1" to="." method="OnTeleportRequested"]

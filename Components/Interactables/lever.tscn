@@ -1,43 +1,61 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://canhwlby5o13a"]
 
-[ext_resource type="Script" path="res://Components/Interactables/Scripts/Lever.cs" id="1_lever"]
+[ext_resource type="Script" uid="uid://drsjvif01ynro" path="res://Components/Interactables/Scripts/Lever.cs" id="1_lever"]
+[ext_resource type="Texture2D" uid="uid://cgv6i5curwpdv" path="res://Assets/LeverSpritesheet.png" id="2_fk5uw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkkhw"]
+atlas = ExtResource("2_fk5uw")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk5uw"]
+atlas = ExtResource("2_fk5uw")
+region = Rect2(0, 16, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lever"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkkhw")
+}],
 "loop": 1,
 "name": &"off",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fk5uw")
+}],
 "loop": 1,
 "name": &"on",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(16, 16)
+size = Vector2(12, 3)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(26, 21)
 
-[node name="Lever" type="StaticBody2D"]
+[node name="Lever" type="StaticBody2D" unique_id=1978179856]
+scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_lever")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1958542247]
 sprite_frames = SubResource("SpriteFrames_lever")
-animation = &"off"
+animation = &"on"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1889679488]
+position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="DetectionZone" type="Area2D" parent="."]
+[node name="DetectionZone" type="Area2D" parent="." unique_id=428921352]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=696484316]
+visible = false
 position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_zone")
 
