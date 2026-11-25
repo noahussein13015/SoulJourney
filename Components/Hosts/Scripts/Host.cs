@@ -95,6 +95,7 @@ public abstract partial class Host : CharacterBody2D
 			playerSoul.TargetHost = null;
 		}
 	}
+	
 
 	protected virtual void OnStateChanged()
 	{
