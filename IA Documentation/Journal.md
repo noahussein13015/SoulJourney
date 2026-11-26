@@ -4,6 +4,15 @@ Le plus récent en haut. Format : date — titre, puis ce qui a été fait, les 
 
 ---
 
+## 2026-11-26 — Porte verrouillée par barreaux, contrôlée par le levier
+- **Décision de design :** pas de herse. Le levier contrôle un état verrouillé de `MaterialDoor` : des barreaux sont dessinés devant la porte et elle ne peut plus être utilisée. Levier sur on = barreaux retirés, la porte reprend son comportement normal (ouverte/fermée selon l'hôte dans la `DetectionZone`).
+- `MaterialDoor` : nouvel état `LOCKED` dans l'enum, export `StartsLocked`, réponse `OnLeverToggled(bool isOn)` connectée dans la scène (pas de `+=`). Tant que l'état est `LOCKED`, `UpdateState` ne fait rien ; levier on → `CLOSE` puis `UpdateState()`. `CanBeUsedBy` renvoie false si verrouillée : appuyer sur action devant une porte verrouillée fait sortir l'âme du corps, comme devant rien.
+- Décision avec l'utilisateur : rester minimal, garder son style de code, connecter les signaux dans les scènes plutôt qu'en code.
+- Nouveau nœud `Bars` (`Sprite2D`, caché par défaut) dans `material_door.tscn`, avec un sprite provisoire généré `Assets/DoorBarsSprite.png` (32×32, calé sur la forme de la porte).
+- `SpawnDungeon` : levier déplacé en (254, -162) par l'utilisateur, `MaterialDoor1` a `StartsLocked = true`, et `Lever.Toggled` est connecté à `MaterialDoor1.OnLeverToggled`.
+- **Fichiers :** `Components/Doors/Scripts/MaterialDoor.cs`, `Components/Doors/material_door.tscn`, `Assets/DoorBarsSprite.png`, `Components/Areas/SpawnDungeon/spawn_dungeon.tscn`.
+- **Reste à faire dans l'éditeur :** ouvrir le projet pour que Godot importe `DoorBarsSprite.png` (et ajoute l'uid dans la scène) ; remplacer le sprite provisoire si besoin ; tester en jeu.
+
 ## 2026-11-25 — Levier : sprite, collision et placement
 - Animations remplies avec `LeverSpritesheet.png` : `off` = région (0, 0), `on` = région (0, 16), 16×16 ; collision du corps réduite à 12×4, décalée de 6 px vers le bas.
 - `CanBeUsedBy` simplifié en `return host is Human;`.

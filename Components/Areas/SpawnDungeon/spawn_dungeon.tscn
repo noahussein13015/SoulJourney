@@ -101,6 +101,7 @@ TargetRoom = 1
 [node name="MaterialDoor1" parent="Doors" unique_id=224641550 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("4_3p1sb")]
 position = Vector2(306, -240)
 TeleportationPoint = NodePath("../TeleportationPoints/MaterialDoor1TeleportPoint")
+StartsLocked = true
 
 [node name="SoulPortal2" parent="Doors" unique_id=1482006008 node_paths=PackedStringArray("TeleportationPoint") instance=ExtResource("3_h8dn0")]
 position = Vector2(298, 43)
@@ -112,7 +113,7 @@ position = Vector2(360, 288)
 [node name="ScreenFader" parent="." unique_id=870755015 instance=ExtResource("7_fader")]
 
 [node name="Lever" parent="." unique_id=1978179856 instance=ExtResource("8_v262f")]
-position = Vector2(213, 206)
+position = Vector2(254, -162)
 
 [node name="Human" parent="." unique_id=1095952825 instance=ExtResource("6_pwamj")]
 position = Vector2(288, 9)
@@ -120,3 +121,4 @@ position = Vector2(288, 9)
 [connection signal="TeleportRequested" from="Doors/SoulPortal1" to="." method="OnTeleportRequested"]
 [connection signal="TeleportRequested" from="Doors/MaterialDoor1" to="." method="OnTeleportRequested"]
 [connection signal="TeleportRequested" from="Doors/SoulPortal2" to="." method="OnTeleportRequested"]
+[connection signal="Toggled" from="Lever" to="Doors/MaterialDoor1" method="OnLeverToggled"]

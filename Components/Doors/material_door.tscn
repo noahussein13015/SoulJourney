@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://rst244hhsp01" path="res://Components/Doors/Scripts/MaterialDoor.cs" id="1_2i7g8"]
 [ext_resource type="Texture2D" uid="uid://0fcenc11igrq" path="res://Assets/DoorSpritesheet.png" id="1_rcdna"]
+[ext_resource type="Texture2D" path="res://Assets/DoorBarsSprite.png" id="2_bars"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2i7g8"]
 atlas = ExtResource("1_rcdna")
@@ -44,6 +45,10 @@ script = ExtResource("1_2i7g8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1015761334]
 sprite_frames = SubResource("SpriteFrames_4fycx")
 animation = &"closed"
+
+[node name="Bars" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_bars")
 
 [node name="DetectionZone" type="Area2D" parent="." unique_id=974664229]
 collision_layer = 0

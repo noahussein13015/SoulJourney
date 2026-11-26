@@ -31,14 +31,16 @@
 - **Comportement :** `Interact` bascule `_isOn`, joue l'animation `on`/`off` et émet `Toggled(bool isOn)`. Commence toujours sur off.
 - **Usage :** connecter `Toggled` dans la scène de niveau à l'objet contrôlé (porte, pont…). Le levier ne connaît pas sa cible.
 - **Collisions :** corps 12×4 décalé de 6 px vers le bas ; `DetectionZone` 26×21 décalée de 18 px vers le bas.
-- **Placé dans :** `SpawnDungeon` (213, 206), `Toggled` pas encore connecté.
+- **Placé dans :** `SpawnDungeon` (254, -162), `Toggled` connecté à `MaterialDoor1.OnLeverToggled` (retire les barreaux).
 - **Sprite :** `Assets/LeverSpritesheet.png`, `off` = région (0, 0), `on` = région (0, 16), 16×16 chacune.
 
 ## MaterialDoor — porte physique
 - **Scène / script :** `Components/Doors/material_door.tscn`, `Scripts/MaterialDoor.cs` (`StaticBody2D, IInteractable`)
-- **Utilisable par :** `Human` uniquement.
+- **Utilisable par :** `Human` uniquement, et seulement si elle n'est pas verrouillée.
+- **États :** `OPEN` / `CLOSE` / `LOCKED`.
 - **Comportement :** ouverte tant qu'un hôte possédé autorisé est dans sa `DetectionZone` (écoute aussi le `StateChanged` de cet hôte) ; animation `closed` jouée après `CloseDelay` (0,5 s) si elle ne s'est pas rouverte entre-temps. `Interact` → émet `TeleportRequested`.
-- **Exports :** `TargetRoom`, `TeleportationPoint` (`Marker2D`).
+- **Verrouillage :** `OnLeverToggled(bool isOn)`, à connecter dans la scène de niveau à `Lever.Toggled`. Levier off → `LOCKED` : nœud `Bars` (`Sprite2D`, `Assets/DoorBarsSprite.png`) affiché, animation `closed`, `CanBeUsedBy` renvoie false, `UpdateState` ignoré. Levier on → retour à `OPEN`/`CLOSE` selon l'hôte dans la zone.
+- **Exports :** `TargetRoom`, `TeleportationPoint` (`Marker2D`), `StartsLocked` (false ; true pour une porte contrôlée par un levier).
 
 ## SoulPortal — portail de l'âme
 - **Scène / script :** `Components/Doors/soul_portal.tscn`, `Scripts/SoulPortal.cs` (`Area2D`)

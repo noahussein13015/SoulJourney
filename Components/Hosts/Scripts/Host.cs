@@ -83,7 +83,8 @@ public abstract partial class Host : CharacterBody2D
 	{
 		if (body is PlayerSoul playerSoul)
 		{
-			playerSoul.TargetHost ??= this;
+			// to not steal the target of another host whose zone the soul is already in
+			playerSoul.TargetHost = playerSoul.TargetHost ?? this;
 		}
 	}
 
